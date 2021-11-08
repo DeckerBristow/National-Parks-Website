@@ -1,0 +1,18 @@
+.info{
+    margin: 10px;
+}
+img{
+    padding: 0px;
+    width: 1000px;
+    border-style: solid;
+    border-width: 10px;
+    border-color: black;
+}
+.mySlides{
+    display: flex;
+    justify-content: center;
+}
+
+a{
+    color: black;
+}

@@ -10,4 +10,8 @@
 .activitiesHeader{
     background-color: navy;
     padding: 20px;
+    color: white;
+}
+.activityHeaderText{
+    color: white;
 }

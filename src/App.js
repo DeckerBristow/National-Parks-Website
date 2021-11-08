@@ -83,7 +83,7 @@ function App() {
                         </Route>
                         <Route exact path="/images">
                             <div>
-                                <Link to="/info">Back</Link>
+                                <Link to={"/info/"+parkCode}>Back</Link>
 
                                 <div className="images">
                                     <Images parkCode={parkCode} fullName={parkName} />

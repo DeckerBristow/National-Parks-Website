@@ -6,9 +6,10 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 function Activity (props){
 
 
+
     return <div className="activity">
 
-        <li onClick={()=>props.parksHandler(props.parks, props.name)}><Link to="/activity">{props.name}</Link></li>
+        <li onClick={()=>props.parksHandler(props.parks, props.name, props.id)}><Link to={"/activity/"+props.id}>{props.name}</Link></li>
 
     </div>
 

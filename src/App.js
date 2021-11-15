@@ -13,36 +13,20 @@ import ParkInfo from "./ParkInfo";
 function App() {
 
 
-    const [fireActs, setFireActs] = useState([]);
-    useEffect(() => {
-        let stuff = collection(firestore, "Activities");
-        getDocs(stuff).then(snapshot => {
-            //array of all the documents
-            let tempPosts = []
-            snapshot.forEach(document => {
-                tempPosts.push(document.data());
-            });
-            setFireActs(tempPosts);
-        });
-
-    }, []
-    );
 
     const [activities, setActivities] = useState([]);
-    const [counter, setCounter] = useState(0);
     const [parks, setParks] = useState([]);
     const [parkCode, setParkCode] = useState("");
     const [parkName, setParkName] = useState("");
-    const [activityName, setActivityName] = useState("");
+
     const [filter, setFilter] = useState("");
 
 
     const key = "uoLqD9IwPhcoCzwooT7klUje0eZZk7JRmGTgtXds";
 
 
-    const parksHandler = (parks, activityName) => {
+    const parksHandler = (parks, activityName, ID) => {
         setParks(parks)
-        setActivityName(activityName)
     };
 
     const parkCodeHandler = (code, name) => {
@@ -62,10 +46,9 @@ function App() {
     }
 
     useEffect(() => {
-        setCounter(counter + 10);
         axios.get("https://developer.nps.gov/api/v1/activities/parks?limit=600&api_key=" + key).then(
             information => {
-                setActivities(information.data.data.map(element => ({ name: element.name, parks: element.parks.map(park => ({ fullName: park.fullName, parkCode: park.parkCode })) })));
+                setActivities(information.data.data.map(element => ({id:element.id, name: element.name, parks: element.parks.map(park => ({ fullName: park.fullName, parkCode: park.parkCode })) })));
             }
 
         );
@@ -86,9 +69,8 @@ function App() {
                 <Router>
 
                     <Switch>
-                        <Route exact path="/info/:id">
+                        <Route exact path="/info/:id/:code">
                             <div>
-                                <Link to={"/activity"}>Activities</Link>
                                 <div className="images">
                                     <ParkInfo parkCode={parkCode} fullName={parkName} />
 
@@ -96,9 +78,8 @@ function App() {
 
                             </div>
                         </Route>
-                        <Route exact path="/images">
+                        <Route exact path="/images/:id/:code">
                             <div>
-                                <Link to={"/info/" + parkCode}>Back</Link>
 
                                 <div className="images">
                                     <Images parkCode={parkCode} fullName={parkName} />
@@ -107,22 +88,20 @@ function App() {
 
                             </div>
                         </Route>
-                        <Route exact path="/activity">
+                        <Route exact path={"/activity/:id"}>
                             <div>
 
                                 <Link to="/">Home Page</Link>
-                                <div className="parksTitle">
+                                
+                                <Park parkCodeHandler={parkCodeHandler}/>
 
-                                    <h1>Parks That Offer {activityName}</h1>
-                                </div>
-
-                                <ul className="parksArray">
+                                {/* <ul className="parksArray">
                                     {parks.map(element => (
                                         <li>
                                             <Park parkCodeHandler={parkCodeHandler} fullName={element.fullName} parkCode={element.parkCode} />
                                         </li>
                                     ))}
-                                </ul>
+                                </ul> */}
 
                             </div>
                         </Route>
@@ -146,7 +125,7 @@ function App() {
                                 <div className="activitiesArray">
                                     {activities.map(element => (
                                         <ul>
-                                            <Activity parksHandler={parksHandler} name={element.name} parks={element.parks} />
+                                            <Activity parksHandler={parksHandler} id={element.id}  name={element.name} parks={element.parks} code={element}/>
                                         </ul>
                                     ))}
 

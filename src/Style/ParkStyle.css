@@ -1,3 +1,13 @@
 img{
     margin: 10px;
 }
+
+.parkInfoTitle{
+    background-color: navy;
+    padding: 20px;
+    color: white;
+}
+.parkList{
+    margin-top: 20px;
+}
+

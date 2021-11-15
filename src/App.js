@@ -5,8 +5,6 @@ import axios from "axios"
 import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom"
 import "../src/Style/AppStyle.css"
 import Images from "./Images";
-import firestore from "./firebase";
-import { collection, getDocs } from "firebase/firestore/lite";
 import ParkInfo from "./ParkInfo";
 
 

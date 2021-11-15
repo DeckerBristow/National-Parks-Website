@@ -13,19 +13,15 @@ function App() {
 
 
     const [activities, setActivities] = useState([]);
-    const [parks, setParks] = useState([]);
     const [parkCode, setParkCode] = useState("");
     const [parkName, setParkName] = useState("");
-
     const [filter, setFilter] = useState("");
 
 
     const key = "uoLqD9IwPhcoCzwooT7klUje0eZZk7JRmGTgtXds";
 
 
-    const parksHandler = (parks, activityName, ID) => {
-        setParks(parks)
-    };
+    
 
     const parkCodeHandler = (code, name) => {
         setParkCode(code)
@@ -51,11 +47,7 @@ function App() {
 
         );
 
-        axios.get("https://developer.nps.gov/api/v1/parks?limit=600&api_key=" + key).then(
-            information => {
-                setParks(information.data.data.map(element => ({ fullName: element.fullName, parCode: element.parkCode })));
-            }
-        );
+        
 
 
     }, []);
@@ -93,14 +85,7 @@ function App() {
                                 
                                 <Park parkCodeHandler={parkCodeHandler}/>
 
-                                {/* <ul className="parksArray">
-                                    {parks.map(element => (
-                                        <li>
-                                            <Park parkCodeHandler={parkCodeHandler} fullName={element.fullName} parkCode={element.parkCode} />
-                                        </li>
-                                    ))}
-                                </ul> */}
-
+                               
                             </div>
                         </Route>
                         <Route exact path="/">
@@ -108,7 +93,7 @@ function App() {
                                 <div className="activitiesHeader">
                                     <h1>Activities</h1>
                                 </div>
-                                <input type='text' placeholder="Search Activities" value={filter} onChange={e => setFilter(e.target.value)} />
+                                <input type='text' placeholder="Search Activities" value={filter} onChange={e => setFilter(e.target.value) } />
                                 <button
                                     onClick={() => {
                                         setActivities(activities.filter(item => item.name.toLowerCase().includes(filter.toLowerCase())))
@@ -123,7 +108,7 @@ function App() {
                                 <div className="activitiesArray">
                                     {activities.map(element => (
                                         <ul>
-                                            <Activity parksHandler={parksHandler} id={element.id}  name={element.name} parks={element.parks} code={element}/>
+                                            <Activity  id={element.id}  name={element.name} parks={element.parks} code={element}/>
                                         </ul>
                                     ))}
 

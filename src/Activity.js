@@ -9,7 +9,7 @@ function Activity (props){
 
     return <div className="activity">
 
-        <li onClick={()=>props.parksHandler(props.parks, props.name, props.id)}><Link to={"/activity/"+props.id}>{props.name}</Link></li>
+        <li ><Link to={"/activity/"+props.id}>{props.name}</Link></li>
 
     </div>
 

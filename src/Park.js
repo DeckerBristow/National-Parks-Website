@@ -21,14 +21,13 @@ function Park(props) {
     }, []);
 
     return <div className="activity">
-        {/* <h3 onClick={() => props.parkCodeHandler(props.parkCode, props.fullName)}><Link to={"/info/" + props.parkCode}>{props.fullName}</Link></h3> */}
         {parks.map(activity => (
             <div>
                 <div className="parkInfoTitle">
                 <h1>Parks that Offer {activity.name}</h1>   
                 </div>   
                 <ul>  
-            {activity.parks.map(park =>
+            {activity.parks.    map(park =>
                 <li className="parkList" onClick={() => props.parkCodeHandler(park.parkCode, park.fullName)}><Link to={"/info/" + id +"/"+ park.parkCode}>{park.fullName}</Link></li>
                 )
               }  </ul></div>

@@ -40,7 +40,7 @@ function Images(props) {
     return <div className="activity">
         <Link to={"/info/" + id + "/" + code}>Back</Link>
 
-        <div className="parkNameHeader">
+        <div className="parkInfoTitle">
             {parkName.map(element => (
             <h1>{element.fullName}</h1>
 

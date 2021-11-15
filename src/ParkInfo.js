@@ -22,7 +22,7 @@ function ParkInfo(props) {
         axios.get("https://developer.nps.gov/api/v1/parks?parkCode=" + parkCode + "?limit=600&api_key=" + key).then(
             information => {
                 setInfo(information.data.data.map(element => ({
-                    description: element.description, activities: element.activities.map(activity => ({ name: activity.name })),
+                    phoneNumber: element.contacts.phoneNumbers[0].phoneNumber, description: element.description, activities: element.activities.map(activity => ({ name: activity.name })),
                     imageUrls: element.images.map(image => ({ title: image.title, url: image.url }))
                 })));
                 //console.log(information.data.data[0].images[0].url)
@@ -34,17 +34,19 @@ function ParkInfo(props) {
     }, []);
 
     return <div className="activity">
+        <div className="parkInfoTitle">
         <h1>{parkName}</h1>
-        <h3><Link to="/images">Images and LiveStreams</Link></h3>
+        </div>
+        <h3><Link to="/images">Images and web cams</Link></h3>
         <div>
             {info.map(element => (
                 <div>
                     <p>{element.description}</p>
-                    <h5>Acivities at {parkName}</h5>
+                    <p>Phone Number: {element.phoneNumber}</p>
+                    <h4>Acivities at {parkName}</h4>
                     <ul>{element.activities.map(item => <li>{item.name}</li>)}</ul>
 
                     <div>{element.imageUrls.map(item => <div><div> <div className="mySlides">
-                        {/* <div className="numbertext">1 / 3</div> */}
                         <img src={item.url} />
                     </div>
 

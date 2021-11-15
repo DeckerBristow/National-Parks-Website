@@ -10,3 +10,9 @@ img{
     flex-direction: column;
     align-items: center;
 }
+
+.parkNameHeader{
+    background-color: navy;
+    padding: 20px;
+    color: white;
+}

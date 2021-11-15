@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Activity from "./Activity";
 import Park from "./Park";
 import axios from "axios"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom"
 import "../src/Style/AppStyle.css"
 import Images from "./Images";
 import firestore from "./firebase";
@@ -11,6 +11,7 @@ import ParkInfo from "./ParkInfo";
 
 
 function App() {
+
 
     const [fireActs, setFireActs] = useState([]);
     useEffect(() => {
@@ -32,12 +33,16 @@ function App() {
     const [parks, setParks] = useState([]);
     const [parkCode, setParkCode] = useState("");
     const [parkName, setParkName] = useState("");
+    const [activityName, setActivityName] = useState("");
+    const [filter, setFilter] = useState("");
+
 
     const key = "uoLqD9IwPhcoCzwooT7klUje0eZZk7JRmGTgtXds";
 
 
-    const parksHandler = (data) => {
-        setParks(data)
+    const parksHandler = (parks, activityName) => {
+        setParks(parks)
+        setActivityName(activityName)
     };
 
     const parkCodeHandler = (code, name) => {
@@ -45,6 +50,16 @@ function App() {
         setParkName(name)
 
     };
+
+    const unfilter = () =>{
+        axios.get("https://developer.nps.gov/api/v1/activities/parks?limit=600&api_key=" + key).then(
+            information => {
+                setActivities(information.data.data.map(element => ({ name: element.name, parks: element.parks.map(park => ({ fullName: park.fullName, parkCode: park.parkCode })) })));
+            }
+
+        ); 
+
+    }
 
     useEffect(() => {
         setCounter(counter + 10);
@@ -73,7 +88,7 @@ function App() {
                     <Switch>
                         <Route exact path="/info/:id">
                             <div>
-                                <Link to="/activity">Activities</Link>
+                                <Link to={"/activity"}>Activities</Link>
                                 <div className="images">
                                     <ParkInfo parkCode={parkCode} fullName={parkName} />
 
@@ -83,7 +98,7 @@ function App() {
                         </Route>
                         <Route exact path="/images">
                             <div>
-                                <Link to={"/info/"+parkCode}>Back</Link>
+                                <Link to={"/info/" + parkCode}>Back</Link>
 
                                 <div className="images">
                                     <Images parkCode={parkCode} fullName={parkName} />
@@ -94,15 +109,20 @@ function App() {
                         </Route>
                         <Route exact path="/activity">
                             <div>
+
                                 <Link to="/">Home Page</Link>
-                                <h1>Parks that offer</h1>
-                                <div className="parksArray">
-                                    {parks.map(element => (
-                                        <div>
-                                            <Park parkCodeHandler={parkCodeHandler} fullName={element.fullName} parkCode={element.parkCode} />
-                                        </div>
-                                    ))}
+                                <div className="parksTitle">
+
+                                    <h1>Parks That Offer {activityName}</h1>
                                 </div>
+
+                                <ul className="parksArray">
+                                    {parks.map(element => (
+                                        <li>
+                                            <Park parkCodeHandler={parkCodeHandler} fullName={element.fullName} parkCode={element.parkCode} />
+                                        </li>
+                                    ))}
+                                </ul>
 
                             </div>
                         </Route>
@@ -111,6 +131,18 @@ function App() {
                                 <div className="activitiesHeader">
                                     <h1>Activities</h1>
                                 </div>
+                                <input type='text' placeholder="Search Activities" value={filter} onChange={e => setFilter(e.target.value)} />
+                                <button
+                                    onClick={() => {
+                                        setActivities(activities.filter(item => item.name.toLowerCase().includes(filter.toLowerCase())))
+                                    }}
+                                >Filter</button>
+                                <button
+                                    onClick={() => {
+                                        unfilter();
+                                        setFilter("");
+                                    }}
+                                >Clear Filter</button>
                                 <div className="activitiesArray">
                                     {activities.map(element => (
                                         <ul>

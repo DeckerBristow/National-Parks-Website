@@ -16,3 +16,9 @@ img{
 a{
     color: black;
 }
+
+.parkInfoTitle{
+    background-color: navy;
+    padding: 20px;
+    color: white;
+}
